@@ -1,3 +1,7 @@
+// EXPRESS JS 
+
+
+
 const express = require("express")
 const app = express();
 
@@ -62,7 +66,7 @@ app.listen(port , () =>{
 //     res.send("No Results")
 // })  
 
-app.get("/search" , (req , res) =>{
-    let {q} = req.query ;
-    res.send(`Search results for query- ${q}`)
-})  
+// app.get("/search" , (req , res) =>{
+//     let {q} = req.query ;
+//     res.send(`Search results for query- ${q}`)
+// })  
