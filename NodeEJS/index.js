@@ -21,9 +21,15 @@ app.get("/rolldice" , (req,res) =>{
 
 // Activity insta page
 app.get("/ig/:username" , (req,res) =>{
-    const followers = ["Adam", "Cris", "Bob", "Hadden"]
     let {username} = req.params ;
-    res.render("instagram.ejs" , {username , followers})
+    const instaData = require("./views/data.json");
+    const data = instaData[username];
+    if(data){
+        res.render("instagram.ejs" , {data})
+    }
+    else{
+        res.render("error.ejs");
+    }
 })
 
 

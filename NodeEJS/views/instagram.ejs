@@ -1,21 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Instagram Page</title>
-</head>
-<body>
-    <h2>This page belongs to @<%= username %></h2>
+    <style>
+        img{
+            height: 100px;
+            width: 100px;
+        }
+    </style>
+  </head>
+  <body>
+
+    <h2>This page belongs to @<%= data.name %></h2>
     <button>Follow</button>
     <button>Message</button>
 
-    <h2>Accounts that follow you</h2>
-    <ul>
-        <% for(name of followers){ %>
-        <li> <%= name %> </li>
-        <% } %>
-    </ul>
-</body>
-</html>
+    <h4>
+      Followers  : <%= data.followers %> &nbsp;&nbsp;&nbsp; Following : <%=
+      data.following %>
+    </h4>
+    <hr />
 
+    <h3>Posts</h3>
+    <% for(post of data.posts){ %> 
+        <img src=" <%= post.image %> " alt="#">
+        <h4>
+      Likes  : <%= post.likes %> &nbsp;&nbsp;&nbsp; Comments : <%=
+      post.comments %>
+    </h4>
+    <% } %>
+
+  </body>
+</html>
