@@ -20,7 +20,7 @@ let posts  =[
     {
         id: uuidv4(),
         username : "harsh",
-        content :"hardwork is needed for success"
+        content :"hardwork is key for success"
     },
     {
         id: uuidv4(),
