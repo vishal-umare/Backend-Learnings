@@ -16,4 +16,5 @@ const fs = require("fs");
 // });
 
 // SYNC (APPENDING)
+
 fs.appendFileSync("./text.txt", `heyy there \n`)
