@@ -64,7 +64,11 @@ const { faker } = require("@faker-js/faker");
 const mysql = require("mysql2");
 const express = require("express");
 const app = express();
+const path = require("path");
 require("dotenv").config();
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 
 const connection = mysql.createConnection({
   host: "localhost",
@@ -88,7 +92,7 @@ app.get("/", (req, res) => {
     connection.query(q, (error, result) => {
       if (error) throw error;
       console.log(result);
-      res.send(result)
+      res.render("home.ejs")
     });
   } 
   catch (error) {
@@ -100,3 +104,4 @@ app.get("/", (req, res) => {
 app.listen("8080", () => {
   console.log("App is listening on port 8080");
 });
+
