@@ -67,6 +67,7 @@ const app = express();
 const path = require("path");
 require("dotenv").config();
 const methodOverride = require("method-override");
+const { v4: uuidv4 } = require("uuid");
 
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({extended:true}));
@@ -160,6 +161,31 @@ app.patch("/user/:id", (req,res)=>{
           res.redirect("/user")
         })
       }
+    });
+  } 
+  catch (error) {
+    console.log(error);
+    res.send("Some error in DB")
+  }
+})
+
+
+// New User route 
+app.get("/user/new",(req,res)=>{
+  res.render("new.ejs")
+})
+
+app.post("/user",(req,res)=>{
+  let {username , email, password} = req.body;
+  let id = uuidv4();
+  // console.log({id, username,email, password});
+  let q = `INSERT INTO users (id, username, email, password) VALUES (?,?,?,?)`;
+  let user = [id, username, email, password];
+
+  try {
+    connection.query(q,user, (error, result) => {
+      if (error) throw error;
+      res.redirect("/user")
     });
   } 
   catch (error) {
