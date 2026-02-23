@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "mogoose": "^0.0.1-security",
     "mongoose": "^9.2.1"
   }
 }
