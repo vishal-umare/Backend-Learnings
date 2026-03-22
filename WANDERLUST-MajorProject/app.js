@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const path = require("path");
 const ejsMate = require("ejs-mate")
+const session = require('express-session');
+const flash = require('connect-flash');
+
 
 const ExpressError = require("./utils/ExpressError.js")
 
@@ -29,15 +32,36 @@ main()
     console.log("Connnected to DB");
   })
   .catch((err) => console.log(err));
-
 async function main() {
   await mongoose.connect(MONGO_URL);
 }
+
+// SESSION OPTIONS
+const sessionOptions = {
+  secret : "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge : 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true ,
+  }
+};
 
 app.get("/", (req, res) => {
   res.send("Hiii");
 });
 
+// Flash and sessions
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req, res, next) =>{
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  console.log(res.locals.success);
+  next();
+});
 
 // ROUTES 
 app.use("/listings", listingRoute) ;
