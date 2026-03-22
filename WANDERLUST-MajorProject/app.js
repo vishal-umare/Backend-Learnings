@@ -6,7 +6,9 @@ const path = require("path");
 const ejsMate = require("ejs-mate")
 const session = require('express-session');
 const flash = require('connect-flash');
-
+const passport = require("passport");
+const LocalStatergy = require("passport-local")
+const User = require("./models/user.js")
 
 const ExpressError = require("./utils/ExpressError.js")
 
@@ -48,19 +50,38 @@ const sessionOptions = {
   }
 };
 
-app.get("/", (req, res) => {
-  res.send("Hiii");
-});
 
 // Flash and sessions
 app.use(session(sessionOptions));
 app.use(flash());
+
+// Passport
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(new LocalStatergy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) =>{
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   console.log(res.locals.success);
   next();
+});
+
+app.get("/demouser", async (req, res) =>{
+  let fakeUser = new User({
+    email: "student@gmail.com",
+    username: "delta",
+  });
+
+  let newUser = await User.register(fakeUser, "fakePassword");
+  res.send(newUser)
+})
+
+
+app.get("/", (req, res) => {
+  res.send("Hiii");
 });
 
 // ROUTES 
