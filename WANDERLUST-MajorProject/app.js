@@ -62,22 +62,15 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Locals
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-  // console.log(res.locals.success);
+  res.locals.currUser = req.user ;
   next();
 });
 
-// app.get("/demouser", async (req, res) => {
-//   let fakeUser = new User({
-//     email: "student@gmail.com",
-//     username: "delta",
-//   });
 
-//   let newUser = await User.register(fakeUser, "fakePassword");
-//   res.send(newUser);
-// });
 
 // ROUTES
 app.get("/", (req, res) => {
