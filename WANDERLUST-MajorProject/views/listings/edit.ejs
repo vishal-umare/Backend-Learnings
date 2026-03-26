@@ -3,7 +3,7 @@
     <div class="row mt-3">
     <div class="col-8 offset-2 ">
     <h2>Edit this Listing</h2>
-    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation">
+    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
 
         <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -17,10 +17,20 @@
             <div class="invalid-feedback">Please enter short description</div>
         </div>
 
+        <!-- image -->
         <div class="mb-3">
-        <label for="image" class="form-label">Image</label>
-        <input name="listing[image]" value="<%= listing.image %>" class="form-control" required> 
+        <label for="image" class="form-label">Upload New Image</label>
+        <input name="listing[image]" value="<%= listing.image %>" class="form-control" type="file"> 
             <div class="invalid-feedback">Please enter image url</div>
+        </div>  
+
+        <!-- 🔥 Preview Image -->
+        <div class="mb-3">
+        <img 
+            id="preview" 
+            width="250" 
+            class="rounded shadow-sm" 
+            style="display: none;">
         </div>
 
         <div class="mb-3">
@@ -49,3 +59,6 @@
 </body>
 
 <!-- <script src="/js/script.js"></script> -->
+<script>
+console.log("JS loaded");
+</script>

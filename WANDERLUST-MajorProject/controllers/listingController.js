@@ -60,8 +60,36 @@ module.exports.editRoute = async (req, res) => {
 
 // UPDATE ROUTE
 module.exports.updateRoute = async (req, res) => {
-  let { id } = req.params;
-  await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    let { id } = req.params;
+
+  // 🔹 Find existing listing
+  let listing = await Listing.findById(id);
+
+  // 🔹 Update text fields
+  Object.assign(listing, req.body.listing);
+
+  // 🔥 If user uploaded new image
+  if (req.file) {
+    // 🧹 Delete old image from Cloudinary
+    await cloudinary.uploader.destroy(listing.image.filename);
+
+    // ☁️ Upload new image
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "wanderlust_dev",
+    });
+
+    // 💾 Save new image
+    listing.image = {
+      url: result.secure_url,
+      filename: result.public_id,
+    };
+
+    // 🧹 Delete temp file
+    fs.unlinkSync(req.file.path);
+  }
+
+  // 🔹 Save updated listing
+  await listing.save();
   req.flash("success", "Listing Updated!");
   res.redirect(`/listings/${id}`);
 };
