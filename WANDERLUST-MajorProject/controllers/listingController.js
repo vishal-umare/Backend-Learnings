@@ -2,6 +2,10 @@ const Listing = require("../models/listing.js");
 const cloudinary = require("../cloudConfig");
 const fs = require("fs");
 
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken = process.env.MAP_TOKEN ;
+const geocodingClient = mbxGeocoding({ accessToken: mapToken });
+
 // INDEX ROUTE
 module.exports.indexRoute = async (req, res) => {
   const allListings = await Listing.find({});
@@ -28,6 +32,14 @@ module.exports.showRoute = async (req, res) => {
 
 // CREATE ROUTE
 module.exports.createRoute = async (req, res, next) => {
+    let response = await geocodingClient.forwardGeocode({
+    query: req.body.listing.location ,
+    limit: 1
+  })
+  .send()
+  console.log(response.body.features[0].geometry);
+  res.send("Done");
+
   // 🔥 Upload image to Cloudinary
   const result = await cloudinary.uploader.upload(req.file.path, {
     folder: "wanderlust_dev",
@@ -55,14 +67,21 @@ module.exports.createRoute = async (req, res, next) => {
 module.exports.editRoute = async (req, res) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
-  res.render("listings/edit.ejs", { listing });
+  if(!listing) {
+    req.flash("error", "Listing you requested for does not exist!");
+    res.redirect("/listings");
+  }
+
+  let originalImageUrl = listing.image.url;
+  originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_150,h_100,c_fill");
+  res.render("listings/edit.ejs", { listing , originalImageUrl});
 };
 
 // UPDATE ROUTE
 module.exports.updateRoute = async (req, res) => {
-    let { id } = req.params;
+  let { id } = req.params;
 
-  // 🔹 Find existing listing
+  // 🔹 Find existing listing 
   let listing = await Listing.findById(id);
 
   // 🔹 Update text fields

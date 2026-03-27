@@ -19,19 +19,16 @@
 
         <!-- image -->
         <div class="mb-3">
+            Original Listing Image <br>
+            <img src="<%= originalImageUrl %>" alt="listing image" class="rounded shadow-sm" width="150">
+        </div>  
+
+        <!-- image -->
+        <div class="mb-3">
         <label for="image" class="form-label">Upload New Image</label>
         <input name="listing[image]" value="<%= listing.image %>" class="form-control" type="file"> 
             <div class="invalid-feedback">Please enter image url</div>
         </div>  
-
-        <!-- 🔥 Preview Image -->
-        <div class="mb-3">
-        <img 
-            id="preview" 
-            width="250" 
-            class="rounded shadow-sm" 
-            style="display: none;">
-        </div>
 
         <div class="mb-3">
         <label for="price" class="form-label">Price</label>
