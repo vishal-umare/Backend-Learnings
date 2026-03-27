@@ -37,8 +37,6 @@ module.exports.createRoute = async (req, res, next) => {
     limit: 1
   })
   .send()
-  console.log(response.body.features[0].geometry);
-  res.send("Done");
 
   // 🔥 Upload image to Cloudinary
   const result = await cloudinary.uploader.upload(req.file.path, {
@@ -54,8 +52,10 @@ module.exports.createRoute = async (req, res, next) => {
     filename: result.public_id,
   };
 
-  await newListing.save();
+  newListing.geometry = response.body.features[0].geometry ;
 
+  let saved = await newListing.save();
+  console.log(saved);
   // 🧹 Delete temp file
   fs.unlinkSync(req.file.path);
 
