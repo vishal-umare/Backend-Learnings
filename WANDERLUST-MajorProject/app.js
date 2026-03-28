@@ -77,9 +77,9 @@ app.use((req, res, next) => {
 
 
 // ROUTES
-app.get("/", (req, res) => {
-  res.send("Hiii");
-});
+// app.get("/", (req, res) => {
+//   res.send("Hiii");
+// });
 
 app.use("/listings", listingRoute);
 
